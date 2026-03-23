@@ -3,7 +3,7 @@
 Приложение предназначено для прослушивания аудиокниг на мобильных устройствах с системой Android.
 
 ---
-![](https://github.com/NoDanate/Individual-Project-BV312/blob/23ca9645768b42415989e06920e6aa031e2f10ef/UseCase/Use-Case.png)
+![](https://github.com/NoDanate/Individual-Project-BV312/blob/98976720dfbc2d0431ddc6995eca8eed78485a96/UseCase/UseCaseDiagram.png)
 ---
 ## Акторы
 
