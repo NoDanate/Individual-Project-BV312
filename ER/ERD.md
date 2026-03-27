@@ -1,4 +1,4 @@
-![]([https://github.com/NoDanate/Individual-Project-BV312/blob/8ab9e99afaa016bebe3e8315f084c72e9f44a00b/ER/ERD.png](https://github.com/NoDanate/Individual-Project-BV312/blob/7e60450ae2378465305535553f5436cc868b02d2/ER/ER-Diagram.png))
+![](https://github.com/NoDanate/Individual-Project-BV312/blob/b360dc0a644dbf7d1a725c99485cff30ef84da76/ER/ER-Diagram.png)
 
 # Сущности
 
