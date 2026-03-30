@@ -1,4 +1,4 @@
-![](https://github.com/NoDanate/Individual-Project-BV312/blob/19d7aaff17f424bf547ee3f5ec635c3c85fd89d1/DB/DB_Book.png)
+![](https://github.com/NoDanate/Individual-Project-BV312/blob/a41c1653ea5f103fdf878e434318d7caa2d60b13/DB/DB_AudioBook.png)
 
 ---
 
@@ -32,7 +32,6 @@
 - `description` — краткое описание книги
 - `imagepath` — ссылка на обложку книги
 - `speaker` — диктор, читающий книгу
-- `ratecount` — количество выданных пользователями оценок
 - `rates` — список всех оценок, которые были выданы данной книге пользователями
 - `bookpath` — ссылка на хранимую аудиокнигу в облаке
 
