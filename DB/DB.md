@@ -1,4 +1,4 @@
-![](https://github.com/NoDanate/Individual-Project-BV312/blob/1d987e34c1c3cfffe7a4b35f9b887e82bb020029/DB/Audiobook.pnghttps://github.com/NoDanate/Individual-Project-BV312/blob/1d987e34c1c3cfffe7a4b35f9b887e82bb020029/DB/Audiobook.png)
+![](DB/Audiobook.png)
 
 ---
 
