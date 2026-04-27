@@ -1,0 +1,73 @@
+<?php
+include_once('config.php');
+
+$bookId = $_GET['id'] ?? 0;
+if (!$bookId) {
+    sendResponse(false, null, 'ID книги не указан');
+}
+
+try {
+    $book = Book::fromDb($bookId);
+    if (!$book) {
+        sendResponse(false, null, 'Книга не найдена');
+    }
+    
+    $userId = null;
+    $user = getCurrentUser();
+    if ($user) {
+        $userId = $user['id'];
+    }
+    
+    $ratingData = Book::getBookRating($bookId);
+    
+    $inWishlist = false;
+    $userRating = null;
+    if ($userId) {
+        $inWishlist = BookUser::isBookInWishlist($userId, $bookId);
+        $userRating = BookUser::getUserRating($userId, $bookId);
+    }
+    
+    $speakers = Book::getBookSpeakers($book->name, $book->author);
+    
+    $similarBooks = [];
+    $allBooks = Book::GetUniqueItems($book->genre);
+    foreach ($allBooks as $similar) {
+        if ($similar->id != $bookId && count($similarBooks) < 4) {
+            $similarBooks[] = [
+                'id' => $similar->id,
+                'name' => $similar->name,
+                'author' => $similar->author,
+                'imageUrl' => $similar->imagepath
+            ];
+        }
+    }
+    
+    $bookData = [
+        'id' => $book->id,
+        'name' => $book->name,
+        'author' => $book->author,
+        'genre' => $book->genre,
+        'description' => $book->description,
+        'imageUrl' => $book->imagepath,
+        'speaker' => $book->speaker,
+        'audioUrl' => $book->bookpath,
+        'rating' => $ratingData['avg'],
+        'ratingCount' => $ratingData['count'],
+        'inWishlist' => $inWishlist,
+        'userRating' => $userRating,
+        'speakers' => array_map(function($s) {
+            return [
+                'id' => $s['id'],
+                'name' => $s['speaker'],
+                'audioUrl' => $s['bookpath']
+            ];
+        }, $speakers),
+        'similarBooks' => $similarBooks
+    ];
+    
+    sendResponse(true, $bookData);
+    
+} catch (PDOException $e) {
+    sendResponse(false, null, 'Ошибка сервера: ' . $e->getMessage());
+}
+?>
