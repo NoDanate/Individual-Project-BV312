@@ -1,4 +1,4 @@
-![](DB/Audiobook.png)
+![](https://github.com/NoDanate/Individual-Project-BV312/blob/a259658ec5a2ff3eb7ca35e00ac2b9524a8de3f8/DB/Audiobook.png)
 
 ---
 
