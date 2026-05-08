@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $input = json_decode(file_get_contents('php://input'), true);
 $login = trim(htmlspecialchars($input['login'] ?? ''));
 $password = $input['password'] ?? '';
-$avatar = $input['avatar'] ?? 'images/default_avatar.png';
 
 if (strlen($login) < 3 || strlen($login) > 30) {
     sendResponse(false, null, 'Логин должен быть от 3 до 30 символов');
@@ -28,15 +27,14 @@ try {
     }
     
     $roleid = 2;
-    $stmt = $pdo->prepare("INSERT INTO account (login, pass, roleid, imagepath) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$login, $password, $roleid, $avatar]);
+    $stmt = $pdo->prepare("INSERT INTO account (login, pass, roleid) VALUES (?, ?, ?)");
+    $stmt->execute([$login, $password, $roleid]);
     
     $userId = $pdo->lastInsertId();
     
     sendResponse(true, [
         'id' => $userId,
         'login' => $login,
-        'avatar' => $avatar
     ], 'Регистрация успешна');
     
 } catch (PDOException $e) {

@@ -1,7 +1,21 @@
 <?php 
 session_start();
 include_once("pages/classes.php");
+if(isset($_POST['logout'])){
+        unset($_SESSION['user']);
+        unset($_SESSION['admin']);
+        header("Location: index.php");
+        exit;
+    }
+if(isset($_POST['login_submit'])){
+        if(Tools::login($_POST['login'], $_POST['pass'])){
+            header("Location: index.php");
+            exit;
+        }
+    }
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

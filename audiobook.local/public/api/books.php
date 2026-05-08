@@ -5,6 +5,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $genre = $_GET['genre'] ?? '';
 $search = $_GET['search'] ?? '';
 $page = (int)($_GET['page'] ?? 1);
+$requestUserId = (int)($_GET['user_id'] ?? 0);
 $limit = 20;
 $offset = ($page - 1) * $limit;
 
@@ -41,11 +42,8 @@ try {
     $stmt->execute($params);
     
     $books = [];
-    $userId = null;
     $user = getCurrentUser();
-    if ($user) {
-        $userId = $user['id'];
-    }
+    $userId = $user['id'] ?? $requestUserId;
     
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $ratingData = Book::getBookRating($row['id']);
@@ -63,9 +61,9 @@ try {
             'author' => $row['author'],
             'genre' => $row['genre'],
             'description' => $row['description'],
-            'imageUrl' => $row['imagepath'],
+            'imageUrl' => 'http://192.168.1.47/' . $row['imagepath'],
             'speaker' => $row['speaker'],
-            'audioUrl' => $row['bookpath'],
+            'audioUrl' => 'http://192.168.1.47/' . $row['bookpath'],
             'rating' => $ratingData['avg'],
             'ratingCount' => $ratingData['count'],
             'inWishlist' => $inWishlist,

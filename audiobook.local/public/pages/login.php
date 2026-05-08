@@ -11,15 +11,6 @@ if ((isset($_SESSION["user"]))):
         <button type="submit" name="logout" class="btn btn-sm btn-secondary">Выйти</button>
     </form>
 
-    <?php
-    if(isset($_POST['logout'])){
-        unset($_SESSION['user']);
-        unset($_SESSION['admin']);
-        header("Location: index.php");
-        exit;
-    }
-    ?>
-
 <?php elseif((isset($_SESSION["admin"]))):
 ?>
      <form action="index.php<?= isset($_GET['page']) ? '?page=' . intval($_GET['page']) : ''?>" 
@@ -30,22 +21,8 @@ if ((isset($_SESSION["user"]))):
         <button type="submit" name="logout" class="btn btn-sm btn-secondary">Выйти</button>
     </form>
 
-    <?php
-    if(isset($_POST['logout'])){
-        unset($_SESSION['user']);
-        unset($_SESSION['admin']);
-        header("Location: index.php");
-        exit;
-    }
-    ?>
-
 <?php else:
-    if(isset($_POST['login_submit'])){
-        if(Tools::login($_POST['login'], $_POST['pass'])){
-            header("Location: index.php");
-            exit;
-        }
-    }
+    
 ?>  
     <form action="index.php<?= isset($_GET['page']) ? '?page=' . intval($_GET['page']) : ''?>" 
     method="post" class="d-flex justify-content-end align-items-center gap-2 mb-3">

@@ -5,17 +5,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendResponse(false, null, 'Метод не поддерживается');
 }
 
-$user = getCurrentUser();
-if (!$user) {
-    sendResponse(false, null, 'Необходима авторизация');
-}
-
 $input = json_decode(file_get_contents('php://input'), true);
 $bookId = (int)($input['book_id'] ?? 0);
 $rating = (int)($input['rating'] ?? 0);
+$requestUserId = (int)($input['user_id'] ?? 0);
+
+$user = getCurrentUser();
+$finalUserId = $user['id'] ?? $requestUserId;
 
 if (!$bookId) {
     sendResponse(false, null, 'ID книги не указан');
+}
+
+if (!$finalUserId) {
+    sendResponse(false, null, 'ID пользователя не указан');
 }
 
 if ($rating < 1 || $rating > 5) {
@@ -23,7 +26,7 @@ if ($rating < 1 || $rating > 5) {
 }
 
 try {
-    $result = BookUser::updateRating($user['id'], $bookId, $rating);
+    $result = BookUser::updateRating($finalUserId, $bookId, $rating);
     
     if ($result === true) {
         $newRating = Book::getBookRating($bookId);
@@ -36,7 +39,7 @@ try {
         sendResponse(false, null, 'Ошибка при сохранении оценки');
     }
     
-} catch (PDOException $e) {
-    sendResponse(false, null, 'Ошибка сервера');
+} catch (Exception $e) {
+    sendResponse(false, null, 'Ошибка сервера: ' . $e->getMessage());
 }
 ?>

@@ -2,6 +2,8 @@
 include_once('config.php');
 
 $bookId = $_GET['id'] ?? 0;
+$requestUserId = $_GET['user_id'] ?? 0;  
+
 if (!$bookId) {
     sendResponse(false, null, 'ID книги не указан');
 }
@@ -12,11 +14,8 @@ try {
         sendResponse(false, null, 'Книга не найдена');
     }
     
-    $userId = null;
     $user = getCurrentUser();
-    if ($user) {
-        $userId = $user['id'];
-    }
+    $userId = $user['id'] ?? $requestUserId; 
     
     $ratingData = Book::getBookRating($bookId);
     
@@ -37,7 +36,7 @@ try {
                 'id' => $similar->id,
                 'name' => $similar->name,
                 'author' => $similar->author,
-                'imageUrl' => $similar->imagepath
+                'imageUrl' =>'http://192.168.1.47/' . $similar->imagepath
             ];
         }
     }
@@ -48,9 +47,9 @@ try {
         'author' => $book->author,
         'genre' => $book->genre,
         'description' => $book->description,
-        'imageUrl' => $book->imagepath,
+        'imageUrl' => 'http://192.168.1.47/' . $book->imagepath,
         'speaker' => $book->speaker,
-        'audioUrl' => $book->bookpath,
+        'audioUrl' => 'http://192.168.1.47/' . $book->bookpath,
         'rating' => $ratingData['avg'],
         'ratingCount' => $ratingData['count'],
         'inWishlist' => $inWishlist,
@@ -59,7 +58,7 @@ try {
             return [
                 'id' => $s['id'],
                 'name' => $s['speaker'],
-                'audioUrl' => $s['bookpath']
+                'audioUrl' =>'http://192.168.1.47/' . $s['bookpath']
             ];
         }, $speakers),
         'similarBooks' => $similarBooks

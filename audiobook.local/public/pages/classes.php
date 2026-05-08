@@ -68,7 +68,6 @@ class Tools{
                 $_SESSION['user'] = $customer->login;
                 $_SESSION['reg'] = $customer->login;
             }
-            echo '<div class="alert alert-success">Вы успешно вошли</div>';
             return true;
         } else {
             echo '<div class="alert alert-warning">Неверный пароль</div>';
@@ -78,12 +77,12 @@ class Tools{
 }
 
 class Account{
-    protected $id;
+    public $id;
     public $login;
-    public $pass;
+    public $pass;//сделать через md5
     public $roleid;
 
-    function __construct($login, $pass, $id=0){
+    function __construct($login, $pass, $id){
         $this->login=$login;
         $this->pass=$pass;
         $this->id=$id;
@@ -98,7 +97,7 @@ class Account{
     function intoDb(){
         try{
             $pdo=Tools::connect();
-            $ps=$pdo->prepare("INSERT INTO account (login, pass, roleid, imagepath)
+            $ps=$pdo->prepare("INSERT INTO account (login, pass, roleid)
             VALUES (:login, :pass, :roleid, :imagepath)");
             $ps->execute([
                 ':login' => $this->login,

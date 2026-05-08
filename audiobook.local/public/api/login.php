@@ -16,7 +16,7 @@ if (empty($login) || empty($password)) {
 try {
     $pdo = Tools::connect();
     
-    $stmt = $pdo->prepare("SELECT id, login, pass, roleid, imagepath FROM account WHERE login = ?");
+    $stmt = $pdo->prepare("SELECT id, login, pass, roleid FROM account WHERE login = ?");
     $stmt->execute([$login]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -29,7 +29,6 @@ try {
         $userData = [
             'id' => $user['id'],
             'login' => $user['login'],
-            'avatar' => $user['imagepath'],
             'isAdmin' => $user['roleid'] == 1
         ];
         

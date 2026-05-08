@@ -19,10 +19,6 @@ if(!isset($_POST['regbtn'])){
     <input type="password" class="form-control" name="pass2" required>
   </div>
 
-  <div class="form-group">
-    <label for="imagepath">Выберите изображение:</label>
-    <input type="file" class="form-control" name="imagepath" required>
-  </div>
 
   <button type="submit" class="btn btn-primary" name="regbtn">Register</button>
 </form>
