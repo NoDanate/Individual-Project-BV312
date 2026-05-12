@@ -1,10 +1,10 @@
 <?php
 include_once('config.php');
-
+// Обработка POST запросов для регистрации
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendResponse(false, null, 'Метод не поддерживается');
 }
-
+// Получение данных из JSON
 $input = json_decode(file_get_contents('php://input'), true);
 $login = trim(htmlspecialchars($input['login'] ?? ''));
 $password = $input['password'] ?? '';
@@ -16,7 +16,7 @@ if (strlen($login) < 3 || strlen($login) > 30) {
 if (strlen($password) < 3 || strlen($password) > 30) {
     sendResponse(false, null, 'Пароль должен быть от 3 до 30 символов');
 }
-
+// Обработка регистрации
 try {
     $pdo = Tools::connect();
     

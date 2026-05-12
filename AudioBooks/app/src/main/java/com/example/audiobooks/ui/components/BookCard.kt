@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.audiobooks.data.models.Book
-
+// Карточка книги для отображения в каталоге
 @SuppressLint("DefaultLocale")
 @Composable
 fun BookCard(
@@ -34,6 +34,7 @@ fun BookCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
+            // Обложка
             AsyncImage(
                 model = book.imageUrl,
                 contentDescription = book.name,
@@ -47,13 +48,14 @@ fun BookCard(
             Column(
                 modifier = Modifier.padding(8.dp)
             ) {
+               // Название
                 Text(
                     text = book.name,
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-
+                // Автор
                 Text(
                     text = book.author,
                     style = MaterialTheme.typography.bodySmall,
@@ -61,7 +63,7 @@ fun BookCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-
+                // Рейтинг и кнопка добавить в избранное
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,

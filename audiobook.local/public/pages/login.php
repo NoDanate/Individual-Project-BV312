@@ -1,6 +1,6 @@
 <?php 
 include_once('pages/classes.php');
-
+// Отображение имени пользователя
 if ((isset($_SESSION["user"]))):
 ?>
     <form action="index.php<?= isset($_GET['page']) ? '?page=' . intval($_GET['page']) : ''?>" 
@@ -22,7 +22,7 @@ if ((isset($_SESSION["user"]))):
     </form>
 
 <?php else:
-    
+//Если вход не выполнен то строка входа
 ?>  
     <form action="index.php<?= isset($_GET['page']) ? '?page=' . intval($_GET['page']) : ''?>" 
     method="post" class="d-flex justify-content-end align-items-center gap-2 mb-3">

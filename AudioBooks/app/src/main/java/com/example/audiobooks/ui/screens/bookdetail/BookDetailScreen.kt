@@ -18,7 +18,7 @@ import coil.compose.AsyncImage
 import com.example.audiobooks.data.models.SimilarBook
 import com.example.audiobooks.ui.components.AudioPlayerBar
 import com.example.audiobooks.ui.screens.player.AudioPlayerViewModel
-
+// Отображение карточки книги, плеера и похожих книг (по жанру)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookDetailScreen(
@@ -48,6 +48,7 @@ fun BookDetailScreen(
                 )
             }
         ) { paddingValues ->
+            // Состояния загрузки, ошибки и отображения
             if (uiState.isLoading) {
                 Box(
                     modifier = Modifier
@@ -329,7 +330,7 @@ fun BookDetailScreen(
         )
     }
 }
-
+// Карточка похожей книги
 @Composable
 fun SimilarBookCard(
     book: SimilarBook,
@@ -370,7 +371,7 @@ fun SimilarBookCard(
         }
     }
 }
-
+// Отображение рейтинга звёздами
 @Composable
 fun StarRating(
     rating: Double,

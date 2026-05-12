@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.audiobooks.data.models.Book
-
+// Отображение списка книг в избранном у пользователя
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WishlistScreen(
@@ -22,7 +22,7 @@ fun WishlistScreen(
     viewModel: WishlistViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
+    // Загрузка при переходе на экран
     LaunchedEffect(Unit) {
         viewModel.loadWishlist()
     }
@@ -42,6 +42,7 @@ fun WishlistScreen(
                 CircularProgressIndicator()
             }
         } else if (uiState.books.isEmpty()) {
+            // Если в БД пусто (в избранном ничего нет)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -69,6 +70,7 @@ fun WishlistScreen(
                 )
             }
         } else {
+            // Список книг
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -87,7 +89,7 @@ fun WishlistScreen(
         }
     }
 }
-
+// Карточка книги в избранном в горизонтальном положении
 @Composable
 fun WishlistBookCard(
     book: Book,

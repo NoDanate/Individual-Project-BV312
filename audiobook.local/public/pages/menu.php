@@ -1,7 +1,7 @@
 <?php 
 $page = $page ?? 1;
 ?>
-
+<!--Верхняя строка сайта-->
 <nav>
     <div class="navbar navbar-expand bg-primary navbar-dark rounded-3 mb-4">
         <div class="containter d-flex flex-column align-items-center justify-content-center">

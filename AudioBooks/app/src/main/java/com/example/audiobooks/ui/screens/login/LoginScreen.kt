@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-
+// Экран входа
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
@@ -29,7 +29,7 @@ fun LoginScreen(
     var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var isRegisterMode by remember { mutableStateOf(false) }
-
+    // Если вход в систему выполнен то переход на главный экран
     LaunchedEffect(uiState.loginSuccess) {
         if (uiState.loginSuccess) {
             onLoginSuccess()
@@ -47,6 +47,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            // Иконка наушников
             Icon(
                 imageVector = Icons.Default.Headphones,
                 contentDescription = null,
@@ -63,7 +64,7 @@ fun LoginScreen(
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-
+            // Заголовок (меняется в зависимости от режима логина/регистрации)
             Text(
                 text = if (isRegisterMode) "Регистрация" else "Вход",
                 style = MaterialTheme.typography.titleMedium,

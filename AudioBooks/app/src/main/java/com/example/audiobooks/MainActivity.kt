@@ -13,15 +13,16 @@ import com.example.audiobooks.ui.theme.AudioBooksTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //Инициализация RetrofitClient
         RetrofitClient.init(this)
 
-        setContent {
+        setContent { // Тема приложения
             AudioBooksTheme() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // Навигация для переходов между экранами
                     val navController = rememberNavController()
                     AppNavigation(navController)
                 }

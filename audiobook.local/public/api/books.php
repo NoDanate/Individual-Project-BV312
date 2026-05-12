@@ -8,7 +8,7 @@ $page = (int)($_GET['page'] ?? 1);
 $requestUserId = (int)($_GET['user_id'] ?? 0);
 $limit = 20;
 $offset = ($page - 1) * $limit;
-
+// Получение массива книг с поиском
 try {
     $pdo = Tools::connect();
     
@@ -76,7 +76,7 @@ try {
             }, $speakers)
         ];
     }
-    
+    // Отправка ответа с данными книг
     sendResponse(true, [
         'books' => $books,
         'page' => $page,

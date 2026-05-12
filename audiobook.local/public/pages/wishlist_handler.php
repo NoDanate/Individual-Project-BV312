@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once('classes.php');
-
+// AJAX-запросы и чтобы страница не перезагружалась лишний раз
 header('Content-Type: application/json');
-
+// Обработка добавления и удаления книги с проверками на авторизованность
 $response = ['success' => false, 'message' => ''];
 
 if (!isset($_POST['action']) || !isset($_POST['book_id'])) {

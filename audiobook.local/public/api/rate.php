@@ -24,11 +24,11 @@ if (!$finalUserId) {
 if ($rating < 1 || $rating > 5) {
     sendResponse(false, null, 'Оценка должна быть от 1 до 5');
 }
-
+// Обработка выставления либо обновления оценки
 try {
     $result = BookUser::updateRating($finalUserId, $bookId, $rating);
     
-    if ($result === true) {
+    if ($result === true) { // Получение обновлённого рейтинга
         $newRating = Book::getBookRating($bookId);
         sendResponse(true, [
             'rating' => $newRating['avg'],

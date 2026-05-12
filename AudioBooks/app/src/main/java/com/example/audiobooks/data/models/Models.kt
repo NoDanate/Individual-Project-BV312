@@ -11,7 +11,6 @@ data class ApiResponse<T>(
 )
 
 // ПОЛЬЗОВАТЕЛЬ
-
 data class User(
     val id: Int,
     val login: String,
@@ -27,13 +26,10 @@ data class LoginRequest(
 // Запрос на регистрацию
 data class RegisterRequest(
     val login: String,
-    val password: String,
-    val avatar: String? = null
+    val password: String
 )
 
 // КНИГИ
-
-// Книга для списка
 data class Book(
     val id: Int,
     val name: String,
@@ -53,7 +49,7 @@ data class Book(
     val speakers: List<Speaker> = emptyList()
 )
 
-// Ответ со списком книг
+// Список книг
 data class BooksResponse(
     val books: List<Book>,
     val page: Int,
@@ -107,8 +103,6 @@ data class GenresResponse(
 )
 
 // ИЗБРАННОЕ
-
-// Ответ с избранными книгами
 data class WishlistBooksResponse(
     val books: List<Book>
 )
@@ -123,8 +117,6 @@ data class WishlistRequest(
 )
 
 // ОЦЕНКИ
-
-// Запрос на оценку
 data class RateRequest(
     @SerializedName("book_id")
     val bookId: Int,

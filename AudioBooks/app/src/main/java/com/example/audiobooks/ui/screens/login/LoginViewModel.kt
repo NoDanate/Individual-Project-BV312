@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
+// Отправка запросов, состояние формы
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = BookRepository()
@@ -17,7 +17,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
-
+    // Обработка входа
     fun login(login: String, password: String) {
         if (login.isBlank() || password.isBlank()) {
             _uiState.value = _uiState.value.copy(
@@ -48,7 +48,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
     }
-
+    // Обработка регистрации
     fun register(login: String, password: String, confirmPassword: String) {
         if (login.isBlank() || password.isBlank()) {
             _uiState.value = _uiState.value.copy(errorMessage = "Заполните все поля")
@@ -94,7 +94,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.value = _uiState.value.copy(errorMessage = null)
     }
 }
-
+// Состояние экрана
 data class LoginUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,

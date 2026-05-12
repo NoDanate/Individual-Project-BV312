@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
-
+// Отправка ответа клиенту
 function sendResponse($success, $data = null, $message = '') {
     echo json_encode([
         'success' => $success,
@@ -22,7 +22,7 @@ function sendResponse($success, $data = null, $message = '') {
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
-
+// Получение информации об авторизованном пользователе
 function getCurrentUser() {
     if (isset($_SESSION['reg']) && $_SESSION['reg'] != '') {
         $userId = BookUser::getUserIdByLogin($_SESSION['reg']);

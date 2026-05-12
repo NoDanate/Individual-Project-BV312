@@ -1,13 +1,13 @@
 <?php
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
-
+//Получение списка всех уникальных книг (по поиску)
 if ($searchQuery != '') {
     $items = Book::searchUniqueBooks($searchQuery);
 } else {
     $items = Book::GetUniqueItems('');
 }
 ?>
-
+<!--Показ всех карточек книг-->
 <div class="container my-4">
     <?php if ($searchQuery != ''): ?>
         <div class="mb-4">
@@ -46,7 +46,7 @@ if ($searchQuery != '') {
         ?>
     </div>
 </div>
-
+    <!--Обработка добавления/удаления из избранного-->
 <script>
 function addToWishlist(bookId) {
     <?php if(!isset($_SESSION['reg']) || $_SESSION['reg'] == ''): ?>

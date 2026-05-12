@@ -1,6 +1,6 @@
 <?php 
 include_once("classes.php");
-
+//Обработка регистрации на сайте
 if(!isset($_POST['regbtn'])){
 ?>
 <form action="index.php?page=3" method="post" enctype="multipart/form-data">

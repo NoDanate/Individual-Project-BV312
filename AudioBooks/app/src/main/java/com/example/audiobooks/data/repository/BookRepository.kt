@@ -3,11 +3,11 @@ package com.example.audiobooks.data.repository
 import android.util.Log
 import com.example.audiobooks.data.api.RetrofitClient
 import com.example.audiobooks.data.models.*
-
+// Взаимодействие с API
 class BookRepository {
 
     private val api = RetrofitClient.apiService
-
+    //Получение текущего id пользователя
     private fun getUserId(): Int = RetrofitClient.getUserId()
 
     // Авторизация
@@ -38,15 +38,14 @@ class BookRepository {
         }
     }
 
-    // Книги
+    // Получить все книги
     suspend fun getBooks(
-        genre: String? = null,
         search: String? = null,
         page: Int = 1
     ): Result<BooksResponse> {
         return try {
             val userId = getUserId()
-            val response = api.getBooks(genre, search, page, userId)
+            val response = api.getBooks(search, page, userId)
             if (response.isSuccessful && response.body()?.success == true) {
                 Result.success(response.body()?.data!!)
             } else {
@@ -69,19 +68,6 @@ class BookRepository {
             }
         } catch (e: Exception) {
             Result.failure(Exception("Ошибка сети: ${e.message}"))
-        }
-    }
-    // Получить жанры
-    suspend fun getGenres(): Result<List<String>> {
-        return try {
-            val response = api.getGenres()
-            if (response.isSuccessful && response.body()?.success == true) {
-                Result.success(response.body()?.data?.genres ?: emptyList())
-            } else {
-                Result.success(emptyList())
-            }
-        } catch (e: Exception) {
-            Result.success(emptyList())
         }
     }
 

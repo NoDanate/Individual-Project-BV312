@@ -14,10 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.audiobooks.ui.components.BookCard
-import com.example.audiobooks.ui.components.GenreFilterChips
 import com.example.audiobooks.ui.components.SearchBar
 import com.example.audiobooks.utils.SessionManager
-
+// Отображение сетки книг с поиском и кнопкой выхода
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatalogScreen(
@@ -29,7 +28,7 @@ fun CatalogScreen(
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val user = sessionManager.getUser()
-
+    // Загрузка книг
     LaunchedEffect(Unit) {
         viewModel.loadBooks()
     }
@@ -44,6 +43,7 @@ fun CatalogScreen(
                     )
                 },
                 actions = {
+                    // Выход из аккаунта
                     IconButton(onClick = onLogout) {
                         Icon(
                             Icons.Default.ExitToApp,
@@ -59,21 +59,13 @@ fun CatalogScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            // Строка поиска
             SearchBar(
                 query = uiState.searchQuery,
                 onQueryChange = viewModel::onSearchQueryChanged,
                 modifier = Modifier.padding(16.dp)
             )
-
-            if (uiState.genres.isNotEmpty()) {
-                GenreFilterChips(
-                    genres = uiState.genres,
-                    selectedGenre = uiState.selectedGenre,
-                    onGenreSelected = viewModel::onGenreSelected,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
-
+            // Состояния загрузки/ошибки/пустого списка/сетки книг
             if (uiState.isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -99,6 +91,7 @@ fun CatalogScreen(
                     Text("Книги не найдены")
                 }
             } else {
+                // Сетка 2 в ряд
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(16.dp),

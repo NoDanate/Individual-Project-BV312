@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-
+// Воспроизведение, перемотка, скорость и состояние плеера
 class AudioPlayerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(AudioPlayerUiState())
     val uiState: StateFlow<AudioPlayerUiState> = _uiState.asStateFlow()
 
     private var player: ExoPlayer? = null
-
+    // Инициализация плеера при первом использовании
     fun initPlayer() {
         if (player != null) return
 
@@ -53,7 +53,7 @@ class AudioPlayerViewModel(application: Application) : AndroidViewModel(applicat
             }
         }
     }
-
+    // Загрузка файла и начало воспроизведения
     fun loadAudio(url: String, bookName: String = "", speaker: String = "", imageUrl: String = "") {
         initPlayer()
 
@@ -73,44 +73,44 @@ class AudioPlayerViewModel(application: Application) : AndroidViewModel(applicat
             imageUrl = imageUrl
         )
     }
-
+    // Пауза/продолжить
     fun playPause() {
         player?.let {
             if (it.isPlaying) it.pause() else it.play()
         }
     }
-
+    // Перемотка
     fun seekTo(positionMs: Long) {
         player?.seekTo(positionMs.coerceIn(0, _uiState.value.duration))
     }
-
+    // Перемотка вперёд на 15 сек
     fun skipForward(ms: Long = 15000) {
         val newPos = _uiState.value.currentPosition + ms
         seekTo(newPos)
     }
-
+    // Перемотка назад на 15 сек
     fun skipBackward(ms: Long = 15000) {
         val newPos = _uiState.value.currentPosition - ms
         seekTo(newPos)
     }
-
+    // Установить скорость
     fun setSpeed(speed: Float) {
         player?.setPlaybackSpeed(speed)
         _uiState.value = _uiState.value.copy(playbackSpeed = speed)
     }
-
+    // Скрыть плеер
     fun hidePlayer() {
         player?.stop()
         _uiState.value = AudioPlayerUiState()
     }
-
+    // Очистка ресурсов при уничтожении ViewModel
     override fun onCleared() {
         super.onCleared()
         player?.release()
         player = null
     }
 }
-
+// Состояние плеера
 data class AudioPlayerUiState(
     val isPlayerVisible: Boolean = false,
     val isPlaying: Boolean = false,

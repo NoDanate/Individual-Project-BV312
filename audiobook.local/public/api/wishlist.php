@@ -2,9 +2,9 @@
 include_once('config.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
-
+// Получение текущего пользователя
 $user = getCurrentUser();
-
+// Если пользователь не авторизован, попытка получить его по переданному user_id
 if (!$user) {
     $userId = $_GET['user_id'] ?? null;
     
@@ -31,7 +31,7 @@ if (!$user) {
 if (!$user) {
     sendResponse(false, null, 'Необходима авторизация. Передайте user_id');
 }
-
+// Получение списка избранного
 if ($method === 'GET') {
     try {
         $books = BookUser::getUserBooks($user['id']);
@@ -63,7 +63,7 @@ if ($method === 'GET') {
     } catch (Exception $e) {
         sendResponse(false, null, 'Ошибка сервера: ' . $e->getMessage());
     }
-    
+// Добавление/удаление из избранного
 } elseif ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
     $bookId = (int)($input['book_id'] ?? 0);

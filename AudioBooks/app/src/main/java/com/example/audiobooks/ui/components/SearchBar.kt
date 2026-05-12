@@ -7,7 +7,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-
+// Строка поиска
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
@@ -23,6 +23,7 @@ fun SearchBar(
         leadingIcon = {
             Icon(Icons.Default.Search, contentDescription = "Поиск")
         },
+        // Кнопка очистки
         trailingIcon = {
             if (query.isNotEmpty()) {
                 IconButton(onClick = { onQueryChange("") }) {

@@ -1,10 +1,10 @@
 <?php
 include_once('config.php');
-
+//Обработка POST запросов для авторизации
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendResponse(false, null, 'Метод не поддерживается');
 }
-
+//Получение данных из JSON 
 $input = json_decode(file_get_contents('php://input'), true);
 $login = $input['login'] ?? '';
 $password = $input['password'] ?? '';
@@ -12,7 +12,7 @@ $password = $input['password'] ?? '';
 if (empty($login) || empty($password)) {
     sendResponse(false, null, 'Логин и пароль обязательны');
 }
-
+//Проверка учетных данных
 try {
     $pdo = Tools::connect();
     

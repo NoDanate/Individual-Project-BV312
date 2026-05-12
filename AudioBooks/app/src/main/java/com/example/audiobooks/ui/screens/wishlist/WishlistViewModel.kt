@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
+// Загрузка и удаление книг из избранного
 class WishlistViewModel : ViewModel() {
 
     private val repository = BookRepository()
 
     private val _uiState = MutableStateFlow(WishlistUiState())
     val uiState: StateFlow<WishlistUiState> = _uiState.asStateFlow()
-
+    // Загрузка списка книг в избранном
     fun loadWishlist() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
@@ -38,7 +38,7 @@ class WishlistViewModel : ViewModel() {
             )
         }
     }
-
+    // Удаление книги из избранного
     fun removeFromWishlist(bookId: Int) {
         viewModelScope.launch {
             val result = repository.removeFromWishlist(bookId)
@@ -54,7 +54,7 @@ class WishlistViewModel : ViewModel() {
         }
     }
 }
-
+// Сотояние
 data class WishlistUiState(
     val books: List<Book> = emptyList(),
     val isLoading: Boolean = false,

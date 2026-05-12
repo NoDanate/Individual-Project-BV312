@@ -18,18 +18,20 @@ import com.example.audiobooks.ui.screens.login.LoginScreen
 import com.example.audiobooks.ui.screens.wishlist.WishlistScreen
 import com.example.audiobooks.utils.SessionManager
 
+//Определяет логин, каталог и избранное, детали книги
 @Composable
 fun AppNavigation(rootNavController: NavHostController) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val isLoggedIn = sessionManager.isLoggedIn()
-
+    //Проверка на авторизованность
     val startDestination = if (isLoggedIn) "main" else "login"
 
     NavHost(
         navController = rootNavController,
         startDestination = startDestination
     ) {
+        // Экран входа/регистрации
         composable("login") {
             LoginScreen(
                 onLoginSuccess = {
@@ -39,7 +41,7 @@ fun AppNavigation(rootNavController: NavHostController) {
                 }
             )
         }
-
+        // Главное окно с нижней панелью для навигации (каталог и избранное)
         composable("main") {
             MainScreen(
                 onBookClick = { bookId -> rootNavController.navigate("book/$bookId") },
@@ -51,7 +53,7 @@ fun AppNavigation(rootNavController: NavHostController) {
                 }
             )
         }
-
+        // Детали книги (карточка)
         composable("book/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId")?.toIntOrNull() ?: 0
             BookDetailScreen(
@@ -64,7 +66,7 @@ fun AppNavigation(rootNavController: NavHostController) {
         }
     }
 }
-
+//Нижняя панель навигации и основной экран
 @Composable
 fun MainScreen(
     onBookClick: (Int) -> Unit,

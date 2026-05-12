@@ -21,7 +21,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1?>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Shop</title>
+  <title>Audiobooks</title>
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
     rel="stylesheet">
@@ -71,7 +71,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1?>
 
     <div class="row mt-4">
         <footer class="col-12 text-center text-muted">
-          Ilia inc &copy; <?php echo date('Y'); ?>
+          Fedr inc &copy; <?php echo date('Y'); ?>
         </footer>
     </div>
   </div>

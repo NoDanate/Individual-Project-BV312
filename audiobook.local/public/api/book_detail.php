@@ -1,6 +1,6 @@
 <?php
 include_once('config.php');
-
+// В этом файле формируется информация о книге
 $bookId = $_GET['id'] ?? 0;
 $requestUserId = $_GET['user_id'] ?? 0;  
 

@@ -1,5 +1,6 @@
 package com.example.audiobooks.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -31,7 +32,7 @@ fun AudioPlayerBar(
     modifier: Modifier = Modifier
 ) {
     var showSpeedDialog by remember { mutableStateOf(false) }
-
+    // Анимация появления/скрытия плеера
     AnimatedVisibility(
         visible = uiState.isPlayerVisible,
         enter = slideInVertically(initialOffsetY = { it }),
@@ -82,7 +83,7 @@ fun AudioPlayerBar(
                     }
                 }
 
-                // Строка с временем
+                // Ползунок со временем
                 Slider(
                     value = if (uiState.duration > 0)
                         uiState.currentPosition.toFloat() / uiState.duration
@@ -204,6 +205,7 @@ fun AudioPlayerBar(
     }
 }
 
+@SuppressLint("DefaultLocale")
 fun formatTime(millis: Long): String {
     val totalSeconds = millis / 1000
     val hours = totalSeconds / 3600

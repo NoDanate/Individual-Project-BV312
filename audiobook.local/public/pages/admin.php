@@ -96,11 +96,11 @@ if(isset($_POST['addbtn'])){
     echo '<div class="alert alert-success">Книга <strong>' . $name . '</strong> успешно добавлена!</div>';
 }
 
-//редактирование или добавление
+//Обработка нажатия на кнопки "Редактировать" и "Удалить"
 $mode = isset($_GET['mode']) ? $_GET['mode'] : 'list';
 $editId = isset($_GET['edit']) ? (int)$_GET['edit'] : 0;
 
-
+//Получение информации о книге (если нажата кнопка "Редактировать")
 $editBook = null;
 if($mode == 'edit' && $editId > 0){
     $editBook = Book::fromDb($editId);
@@ -108,7 +108,7 @@ if($mode == 'edit' && $editId > 0){
 ?>
 
 <div class="container mt-4 mb-5">
-    
+    <!--Отображение списка всех книг-->
     <?php if($mode == 'list'): ?>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Управление книгами</h2>
@@ -166,7 +166,7 @@ if($mode == 'edit' && $editId > 0){
         <?php else: ?>
             <div class="alert alert-info">Книг пока нет. <a href="index.php?page=4&mode=add">Добавить первую книгу</a></div>
         <?php endif; ?>
-        
+    <!--Окно изменения/добавления книги-->    
     <?php elseif($mode == 'add' || $mode == 'edit'): ?>
         <div class="card shadow-lg border-0 rounded-4">
             <div class="card-header bg-primary text-white text-center rounded-top-4">

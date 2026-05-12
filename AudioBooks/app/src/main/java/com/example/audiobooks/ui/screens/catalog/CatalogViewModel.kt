@@ -9,20 +9,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
+// Загрузка, добавление в избранное и поиск книг
 class CatalogViewModel : ViewModel() {
 
     private val repository = BookRepository()
 
     private val _uiState = MutableStateFlow(CatalogUiState())
     val uiState: StateFlow<CatalogUiState> = _uiState.asStateFlow()
-
-
-    fun loadBooks(genre: String? = null, search: String? = null) {
+    // Загрузка книг с учётом поискового запроса
+    fun loadBooks(search: String? = null) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
 
-            val result = repository.getBooks(genre, search)
+            val result = repository.getBooks(search)
 
             result.fold(
                 onSuccess = { response ->
@@ -41,19 +40,7 @@ class CatalogViewModel : ViewModel() {
             )
         }
     }
-
-    private fun loadGenres() {
-        viewModelScope.launch {
-            val result = repository.getGenres()
-            result.fold(
-                onSuccess = { genres ->
-                    _uiState.value = _uiState.value.copy(genres = genres)
-                },
-                onFailure = { }
-            )
-        }
-    }
-
+    // Добавление/удаление из избранного
     fun toggleWishlist(bookId: Int, inWishlist: Boolean) {
         Log.d("CATALOG_DEBUG", "toggleWishlist: bookId=$bookId, inWishlist=$inWishlist")
 
@@ -75,7 +62,7 @@ class CatalogViewModel : ViewModel() {
             )
         }
     }
-
+    // Обновление статуса избранного у книги
     private fun updateBookWishlistStatus(bookId: Int, inWishlist: Boolean) {
         _uiState.value = _uiState.value.copy(
             books = _uiState.value.books.map { book ->
@@ -83,27 +70,18 @@ class CatalogViewModel : ViewModel() {
             }
         )
     }
-
+    // Обработка выбора жанра в фильме
     fun onSearchQueryChanged(query: String) {
         _uiState.value = _uiState.value.copy(searchQuery = query)
         if (query.length >= 2) {
             loadBooks(search = query)
-        } else if (query.isEmpty()) {
-            loadBooks(genre = _uiState.value.selectedGenre)
         }
     }
-
-    fun onGenreSelected(genre: String?) {
-        _uiState.value = _uiState.value.copy(selectedGenre = genre)
-        loadBooks(genre = genre)
-    }
 }
-
+// Класс состояния
 data class CatalogUiState(
     val books: List<Book> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val searchQuery: String = "",
-    val genres: List<String> = emptyList(),
-    val selectedGenre: String? = null
+    val searchQuery: String = ""
 )

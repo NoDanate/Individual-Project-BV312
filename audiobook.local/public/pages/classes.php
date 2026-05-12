@@ -1,6 +1,7 @@
 <?php
 
 class Tools{
+    // Подключение к БД
     static function connect($host = 'localhost',$user = 'postgres',$pass = 'lap-Fedor12!',$dbname = 'AudioBook'){
             try{
                 $dsn = "pgsql:host=$host;dbname=$dbname";
@@ -12,7 +13,7 @@ class Tools{
                 die("Connection failed: "  . $e->getMessage());
             }
     }
-
+    // Регистрация в базе данных
     static function register($name, $pass, $imagepath){
         $name = trim(htmlspecialchars($name));
         $pass = trim(htmlspecialchars($pass));
@@ -40,7 +41,7 @@ class Tools{
         }
         return true;
     }
-
+    // Авторизация
     static function login($name, $pass){
         $name = trim(htmlspecialchars($name));
         $pass = trim(htmlspecialchars($pass));
@@ -75,7 +76,7 @@ class Tools{
         return false;
     }
 }
-
+// Класс аккаунта пользователя
 class Account{
     public $id;
     public $login;
@@ -93,7 +94,7 @@ class Account{
             $this->roleid = 2;
         }
     }
-
+    // Добавление пользователя в БД
     function intoDb(){
         try{
             $pdo=Tools::connect();
@@ -113,7 +114,7 @@ class Account{
                 return $e->getMessage();
         }
     }
-    
+    // Получение пользователя по id в таблице из БД
     static function fromDb($id){
         $customer=null;
         try{
@@ -128,7 +129,7 @@ class Account{
             return false;
         }
     }
-
+    // Получение пользователя по имени(логину) из базы данных
     static function fromDbName($Name){
         $customer=null;
         try{
@@ -160,7 +161,7 @@ class Book{
         $this->speaker = $speaker;
         $this->bookpath = $bookpath;
     }
-
+    // Добавление в БД
     function intoDb(){
         try{
             $pdo=Tools::connect();
@@ -180,7 +181,7 @@ class Book{
             return $e->getMessage();
         }
     }
-    
+    // Получение информации о книге по id из БД
     static function fromDb($id){
         $customer=null;
         try{
@@ -200,27 +201,7 @@ class Book{
             return false;
         }
     }
-
-    static function fromDbName($name){
-        $customer=null;
-        try{
-            $pdo=Tools::connect();
-            $ps=$pdo->prepare("SELECT * FROM book WHERE name=?");
-            $ps->execute([$name]);
-            $row=$ps->fetch(PDO::FETCH_ASSOC);
-            if($row){
-                $customer=new Book($row['id'],$row['name'],$row['author'],
-                $row['genre'],$row['description'],
-                $row['imagepath'], $row['speaker'], 
-                $row['bookpath']);
-            }
-            return $customer;
-        } catch (PDOException $e){
-            echo $e->getMessage();
-            return false;
-        }
-    }
-
+    //Получение массива книг по жанру (если жанр пустой то просто список всех книг)
     static function GetItems($genre){
         $items = [];
         try{
@@ -252,7 +233,7 @@ class Book{
             return false;
         }
     }
-    
+    // Получение рейтинга книги по id 
     static function getBookRating($book_id){
         try{
             $pdo = Tools::connect();
@@ -275,7 +256,7 @@ class Book{
             return ['avg' => 0, 'count' => 0];
         }
     }
-
+    // Отображение карточки книги в каталоге
     function Draw(){
         $id = htmlspecialchars($this->id);
         $name= htmlspecialchars($this->name);
@@ -363,7 +344,7 @@ class Book{
             </div>
         HTML;
     }
-
+    // Отображение информации о аудиокниге в избранном
     function DrawCart(){
         $id = htmlspecialchars($this->id);
         $name = htmlspecialchars($this->name);
@@ -399,41 +380,7 @@ class Book{
         </div>
         HTML;
     }
-
-    static function searchBooks($query) {
-        $books = [];
-        try {
-            $pdo = Tools::connect();
-            $searchTerm = "%{$query}%";
-        
-            $ps = $pdo->prepare("
-                SELECT * FROM book 
-                WHERE LOWER(name) LIKE LOWER(?) 
-                OR LOWER(author) LIKE LOWER(?)
-                ORDER BY name
-            ");
-        
-            $ps->execute([$searchTerm, $searchTerm]);
-        
-            while($row = $ps->fetch(PDO::FETCH_ASSOC)) {
-                $book = new Book(
-                    $row['id'],
-                    $row['name'],
-                    $row['author'],
-                    $row['genre'],
-                    $row['description'],
-                    $row['imagepath'],
-                    $row['speaker'],
-                    $row['bookpath']
-                );
-                $books[] = $book;
-            }
-            return $books;
-        } catch(PDOException $e) {
-            return [];
-        }
-    }
-
+    //Получение уникальных книг (так как есть разные рассказчики, а книга одна)
     static function GetUniqueItems($genre = '') {
         $items = [];
         try {
@@ -476,7 +423,7 @@ class Book{
             return false;
         }
     }
-
+    // Получение всех расказчиков у книги
     static function getBookSpeakers($name, $author) {
         $speakers = [];
         try {
@@ -501,7 +448,7 @@ class Book{
             return [];
         }
     }
-
+    //Поиск в уникальных книгах по имени и автору
     static function searchUniqueBooks($query) {
         $books = [];
         try {
@@ -538,7 +485,7 @@ class Book{
         }
     }
 }
-
+// Класс таблицы BookUser (для работы избранного и оценивания)
 class BookUser {
     public $user_id;
     public $book_id;
@@ -549,9 +496,7 @@ class BookUser {
         $this->book_id = $book_id;
         $this->rate = $rate;
     }
-
-    
-
+    // Добавление записи в таблицу, для избранного и оценивания
     function intoDb() {
         try {
             $pdo = Tools::connect();
@@ -574,7 +519,7 @@ class BookUser {
             return $e->getMessage();
         }
     }
-
+    // Удаление записи из таблицы
     static function deleteFromDb($user_id, $book_id) {
         try {
             $pdo = Tools::connect();
@@ -585,7 +530,7 @@ class BookUser {
             return $e->getMessage();
         }
     }
-
+    // Получение всех книг, которые содержатся у пользователя в избранном
     static function getUserBooks($user_id) {
         $books = [];
         try {
@@ -615,7 +560,7 @@ class BookUser {
             return [];
         }
     }
-
+    // Проверка на наличие книги в избранном
     static function isBookInWishlist($user_id, $book_id) {
         try {
             $pdo = Tools::connect();
@@ -626,7 +571,7 @@ class BookUser {
             return false;
         }
     }
-
+    // Получение id пользователя по логину
     static function getUserIdByLogin($login) {
         try {
             $pdo = Tools::connect();
@@ -638,7 +583,7 @@ class BookUser {
             return null;
         }
     }
-
+    // Перезапить оценки, выданной пользователем
     static function updateRating($user_id, $book_id, $rate) {
         try {
             $pdo = Tools::connect();
@@ -658,7 +603,7 @@ class BookUser {
             return $e->getMessage();
         }
     }
-
+    // Получение оценки, выданной пользователем
     static function getUserRating($user_id, $book_id) {
         try {
             $pdo = Tools::connect();

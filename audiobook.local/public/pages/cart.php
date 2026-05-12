@@ -1,6 +1,6 @@
 <?php 
 echo '<form action="index.php?page=2" method="post">';
-
+//Отображение всех книг в вишлисте 
 if(!isset($_SESSION['reg']) || $_SESSION['reg'] == '') {
     echo '<div class="alert alert-warning">Для просмотра желаемого необходимо <a href="index.php?page=3">авторизоваться</a></div>';
 } else {
@@ -21,7 +21,7 @@ if(!isset($_SESSION['reg']) || $_SESSION['reg'] == '') {
     }
 }
 ?>
-
+<!--Обработка удаления книги из вишлиста через wishlist_handler-->
 <script>
 function removeFromWishlist(bookId) {
     if(confirm('Удалить книгу из желаемого?')) {

@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once('classes.php');
-
+//Получение информации о книге (рейтинг, наличие в избранном у пользователя и его оценка книге)
 if(isset($_POST['submit_rating']) && isset($_POST['book_id']) && isset($_POST['rating'])) {
     $book_id = (int)$_POST['book_id'];
     $rating = (int)$_POST['rating'];
@@ -19,7 +19,7 @@ if(isset($_POST['submit_rating']) && isset($_POST['book_id']) && isset($_POST['r
         }
     }
 }
-
+// Если такой книги вдруг нет но пользователь волшебным образом попадёт на страницу
 if(!isset($_GET['name']) || empty($_GET['name'])){
     echo '<div class="container mt-5">
             <div class="alert alert-danger">Товар не найден</div>
@@ -29,14 +29,14 @@ if(!isset($_GET['name']) || empty($_GET['name'])){
 
 $itemId = intval($_GET['name']);
 $item = Book::fromDb($itemId);
-
+//Если в базе данных нет книги
 if(!$item){
     echo '<div class="container mt-5">
             <div class="alert alert-warning">Товар с таким ID не существует</div>
           </div>';
     exit;
 }
-
+// Проверка на кол-во рассказчиков в книге
 $speakers = Book::getBookSpeakers($item->name, $item->author);
 $hasMultipleSpeakers = count($speakers) > 1;
 
@@ -47,7 +47,7 @@ $user = (!isset($_SESSION['reg']) || $_SESSION['reg'] == '')
 $ratingData = Book::getBookRating($itemId);
 $avgRating = $ratingData['avg'];
 $ratingCount = $ratingData['count'];
-
+// Получение рейтинга который поставил пользователь
 $userRating = null;
 $user_id = null;
 if(isset($_SESSION['reg']) && $_SESSION['reg'] != ''){
@@ -56,7 +56,7 @@ if(isset($_SESSION['reg']) && $_SESSION['reg'] != ''){
         $userRating = BookUser::getUserRating($user_id, $itemId);
     }
 }
-
+//Проверка на наличие книги в избранном
 $isInWishlist = false;
 if($user_id) {
     $isInWishlist = BookUser::isBookInWishlist($user_id, $itemId);
@@ -64,7 +64,7 @@ if($user_id) {
 
 $currentBookId = $itemId;
 ?>
-
+<!--Отображение информации по книге-->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -360,7 +360,7 @@ $currentBookId = $itemId;
         }
         return currentBookId;
     }
-    
+    // Изменение рассказчика
     function changeSpeaker() {
         const select = document.getElementById('speakerSelect');
         const selectedOption = select.options[select.selectedIndex];
@@ -382,7 +382,7 @@ $currentBookId = $itemId;
         
         checkWishlistStatus(newBookId);
     }
-    
+    // Проверка наличия в избранном
     function checkWishlistStatus(bookId) {
         <?php if(isset($_SESSION['reg']) && $_SESSION['reg'] != ''): ?>
         fetch('../pages/wishlist_handler.php', {
@@ -412,7 +412,7 @@ $currentBookId = $itemId;
         });
         <?php endif; ?>
     }
-
+    // Добавление в избранное
     function addToWishlist(bookId) {
         <?php if(!isset($_SESSION['reg']) || $_SESSION['reg'] == ''): ?>
             alert('Необходимо авторизоваться, чтобы добавить книгу в желаемое');
@@ -440,7 +440,7 @@ $currentBookId = $itemId;
             alert('Произошла ошибка');
         });
     }
-
+    //Удаление из избраного
     function removeFromWishlist(bookId) {
         if(confirm('Удалить книгу из желаемого?')) {
             fetch('../pages/wishlist_handler.php', {
