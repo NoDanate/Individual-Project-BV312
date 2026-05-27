@@ -177,6 +177,7 @@ class Book{
                 ':speaker' => $this->speaker,
                 ':bookpath' => $this->bookpath,
             ]);
+            return true;
         } catch(PDOException $e){
             return $e->getMessage();
         }

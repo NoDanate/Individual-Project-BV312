@@ -74,27 +74,68 @@ if(isset($_POST['updatebtn'])){
 
 // Обработка добавления
 if(isset($_POST['addbtn'])){
-    if(is_uploaded_file($_FILES['imagepath']['tmp_name'])){
-        $imagepath = "images/" . $_FILES['imagepath']['name'];
-        move_uploaded_file($_FILES['imagepath']['tmp_name'], $imagepath);
-    }
-    if(is_uploaded_file($_FILES['bookpath']['tmp_name'])){
-        $bookpath = "books/" . $_FILES['bookpath']['name'];
-        move_uploaded_file($_FILES['bookpath']['tmp_name'], $bookpath);
-    }
-
     $name = trim(htmlspecialchars($_POST['name']));
     $author = trim(htmlspecialchars($_POST['author']));
     $genre = trim(htmlspecialchars($_POST['genre']));
     $speaker = trim(htmlspecialchars($_POST['speaker']));
     $info = trim(htmlspecialchars($_POST['description']));
     $rates = '{}';
-
-    $item = new Book($id = 0, $name, $author, $genre, $info, $imagepath, $speaker, $bookpath);
-    $item->intoDb();
-
-    echo '<div class="alert alert-success">Книга <strong>' . $name . '</strong> успешно добавлена!</div>';
+    
+    // Инициализируем переменные
+    $imagepath = '';
+    $bookpath = '';
+    $errors = [];
+    
+    // Загрузка изображения
+    if(isset($_FILES['imagepath']) && is_uploaded_file($_FILES['imagepath']['tmp_name'])){
+        $imagepath = "images/" . basename($_FILES['imagepath']['name']);
+        if(!move_uploaded_file($_FILES['imagepath']['tmp_name'], $imagepath)){
+            $errors[] = "Ошибка загрузки изображения";
+        }
+    } else {
+        $errors[] = "Изображение не выбрано";
+    }
+    
+    // Загрузка аудиокниги
+    if(isset($_FILES['bookpath']) && is_uploaded_file($_FILES['bookpath']['tmp_name'])){
+        $bookpath = "books/" . basename($_FILES['bookpath']['name']);
+        if(!move_uploaded_file($_FILES['bookpath']['tmp_name'], $bookpath)){
+            $errors[] = "Ошибка загрузки аудиокниги";
+        }
+    } else {
+        $errors[] = "Аудиокнига не выбрана";
+    }
+    
+    // Если есть ошибки
+    if(!empty($errors)){
+        echo '<div class="alert alert-danger"><ul>';
+        foreach($errors as $error){
+            echo '<li>' . $error . '</li>';
+        }
+        echo '</ul></div>';
+    } else {
+        // Добавление в БД
+        try {
+            $item = new Book(0, $name, $author, $genre, $info, $imagepath, $speaker, $bookpath);
+            $result = $item->intoDb();
+            
+            if($result == true){
+                echo '<div class="alert alert-success">Книга <strong>' . $name . '</strong> успешно добавлена!</div>';
+            } else {
+                // Если ошибка при добавлении в БД - удаляем загруженные файлы
+                if(file_exists($imagepath)) unlink($imagepath);
+                if(file_exists($bookpath)) unlink($bookpath);
+                echo '<div class="alert alert-danger">Ошибка добавления в БД: ' . $result . '</div>';
+            }
+        } catch(Exception $e){
+            // Если ошибка - удаляем файлы
+            if(file_exists($imagepath)) unlink($imagepath);
+            if(file_exists($bookpath)) unlink($bookpath);
+            echo '<div class="alert alert-danger">Ошибка: ' . $e->getMessage() . '</div>';
+        }
+    }
 }
+
 
 //Обработка нажатия на кнопки "Редактировать" и "Удалить"
 $mode = isset($_GET['mode']) ? $_GET['mode'] : 'list';

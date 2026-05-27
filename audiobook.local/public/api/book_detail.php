@@ -37,6 +37,7 @@ try {
                 'name' => $similar->name,
                 'author' => $similar->author,
                 'imageUrl' =>'http://192.168.1.47/' . $similar->imagepath
+                //'imageUrl' =>'http://172.20.10.2/' . $similar->imagepath
             ];
         }
     }
@@ -48,8 +49,10 @@ try {
         'genre' => $book->genre,
         'description' => $book->description,
         'imageUrl' => 'http://192.168.1.47/' . $book->imagepath,
+        //'imageUrl' =>'http://172.20.10.2/' . $similar->imagepath,
         'speaker' => $book->speaker,
         'audioUrl' => 'http://192.168.1.47/' . $book->bookpath,
+        //'audioUrl' => 'http://172.20.10.2/' . $book->bookpath,
         'rating' => $ratingData['avg'],
         'ratingCount' => $ratingData['count'],
         'inWishlist' => $inWishlist,
@@ -59,6 +62,7 @@ try {
                 'id' => $s['id'],
                 'name' => $s['speaker'],
                 'audioUrl' =>'http://192.168.1.47/' . $s['bookpath']
+                //'audioUrl' =>'http://172.20.10.2/' . $s['bookpath']
             ];
         }, $speakers),
         'similarBooks' => $similarBooks

@@ -12,7 +12,9 @@ import java.util.concurrent.TimeUnit
 //Настройка работы с API через Retrofit
 object RetrofitClient {
     // Ссылка на API сервера
+
     private const val BASE_URL = "http://192.168.1.47/api/"
+    //private const val BASE_URL = "http://172.20.10.2/api/"
 
     private var sessionManager: SessionManager? = null
     // Инициализация менеджера сессий (авторизован ли пользователь)
