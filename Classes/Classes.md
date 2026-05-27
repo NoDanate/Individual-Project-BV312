@@ -1,5 +1,3 @@
-# Диаграмма классов приложения для прослушивания аудиокниг
-
 ![Диаграмма классов](https://github.com/NoDanate/Individual-Project-BV312/blob/bdc5f9e7fe228dc6d6d25fbd8f16fc1d8632d01b/Classes/Classes.png)
 
 ## Сущности
